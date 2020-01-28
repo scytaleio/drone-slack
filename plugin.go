@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strings"
 
 	"github.com/bluele/slack"
@@ -45,15 +46,16 @@ type (
 	}
 
 	Config struct {
-		Webhook   string
-		Channel   string
-		Recipient string
-		Username  string
-		Template  string
-		ImageURL  string
-		IconURL   string
-		IconEmoji string
-		LinkNames bool
+		Webhook        string
+		Channel        string
+		Recipient      string
+		Username       string
+		Template       string
+		AttachmentFile string
+		ImageURL       string
+		IconURL        string
+		IconEmoji      string
+		LinkNames      bool
 	}
 
 	Job struct {
@@ -118,6 +120,14 @@ func (p Plugin) Exec() error {
 		}
 	} else {
 		attachment.Text = message(p.Repo, p.Build)
+	}
+
+	if p.Config.AttachmentFile != "" {
+		dat, err := ioutil.ReadFile(p.Config.AttachmentFile)
+		if err != nil {
+			return err
+		}
+		attachment.Text = fmt.Sprintf("%s\n%s", attachment.Text, string(dat))
 	}
 
 	client := slack.NewWebHook(p.Config.Webhook)

@@ -46,6 +46,11 @@ func main() {
 			Usage:  "slack template",
 			EnvVar: "PLUGIN_TEMPLATE",
 		},
+		cli.StringFlag{
+			Name:   "attachment",
+			Usage:  "slack attachment file",
+			EnvVar: "PLUGIN_ATTACHMENT",
+		},
 		cli.BoolFlag{
 			Name:   "link-names",
 			Usage:  "slack link names",
@@ -213,15 +218,16 @@ func run(c *cli.Context) error {
 			Started: c.Int64("job.started"),
 		},
 		Config: Config{
-			Webhook:   c.String("webhook"),
-			Channel:   c.String("channel"),
-			Recipient: c.String("recipient"),
-			Username:  c.String("username"),
-			Template:  c.String("template"),
-			ImageURL:  c.String("image"),
-			IconURL:   c.String("icon.url"),
-			IconEmoji: c.String("icon.emoji"),
-			LinkNames: c.Bool("link-names"),
+			Webhook:        c.String("webhook"),
+			Channel:        c.String("channel"),
+			Recipient:      c.String("recipient"),
+			Username:       c.String("username"),
+			Template:       c.String("template"),
+			AttachmentFile: c.String("attachment"),
+			ImageURL:       c.String("image"),
+			IconURL:        c.String("icon.url"),
+			IconEmoji:      c.String("icon.emoji"),
+			LinkNames:      c.Bool("link-names"),
 		},
 	}
 
